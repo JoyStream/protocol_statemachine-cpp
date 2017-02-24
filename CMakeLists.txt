@@ -14,10 +14,39 @@ include_directories("${CMAKE_SOURCE_DIR}/include")
 
 set(
   library_sources
-    src/*.cpp
-    src/detail/*.cpp
-    src/event/*.cpp
-    src/exception/*.cpp
+    src/event/ContractPrepared.cpp
+    src/event/RequestPiece.cpp
+    src/event/SellModeStarted.cpp
+    src/event/BuyModeStarted.cpp
+    src/event/Joined.cpp
+    src/event/PieceLoaded.cpp
+    src/event/InviteSeller.cpp
+    src/exception/InvitedToJoinContractByNonBuyer.cpp
+    src/exception/StateIncompatibleEvent.cpp
+    src/exception/CannotInviteNonSeller.cpp
+    src/detail/InitializeBuying.cpp
+    src/detail/InitializeSelling.cpp
+    src/AnnouncedModeAndTerms.cpp
+    src/ServicingPieceRequest.cpp
+    src/CBStateMachine.cpp
+    src/ChooseMode.cpp
+    src/Active.cpp
+    src/Selling.cpp
+    src/Buying.cpp
+    src/Observing.cpp
+    src/ReadyForInvitation.cpp
+    src/Invited.cpp
+    src/WaitingToStart.cpp
+    src/ReadyForPieceRequest.cpp
+    src/WaitingForPayment.cpp
+    src/ReadyToInviteSeller.cpp
+    src/WaitingForSellerToJoin.cpp
+    src/SellerHasJoined.cpp
+    src/PreparingContract.cpp
+    src/ReadyToRequestPiece.cpp
+    src/LoadingPiece.cpp
+    src/WaitingForFullPiece.cpp
+    src/ProcessingPiece.cpp
 )
 
 # === build library ===
