@@ -38,7 +38,7 @@ namespace event {
 }
 
 // Needed due to c++ needing implementation for all uses of templated types
-#include <protocol_statemachine/../../src/event/Recv.cpp>
+#include <protocol_statemachine/event/Recv.tpl>
 
 #endif // JOYSTREAM_PROTOCOLSTATEMACHINE_EVENT_RECV_HPP
 

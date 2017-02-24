@@ -40,7 +40,7 @@ namespace event {
 }
 
 // Needed due to c++ needing implementation for all uses of templated types
-#include <protocol_statemachine/../../src/event/UpdateTerms.cpp>
+#include <protocol_statemachine/event/UpdateTerms.tpl>
 
 
 #endif // JOYSTREAM_PROTOCOL_STATEMACHINE_UPDATETERMS_HPP
