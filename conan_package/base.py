@@ -9,7 +9,7 @@ class ProtocolStateMachineBase(ConanFile):
     git_repo = "git@github.com:JoyStream/protocol_statemachine-cpp.git"
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
-    requires = "ProtocolWire/0.1@joystream/stable", "PaymentChannel/0.1@joystream/stable",
+    requires = "ProtocolWire/0.1.1@joystream/stable", "PaymentChannel/0.1.1@joystream/stable",
     build_policy = "missing"
 
     def source(self):
