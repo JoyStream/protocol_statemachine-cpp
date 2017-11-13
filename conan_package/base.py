@@ -5,9 +5,9 @@ class ProtocolStateMachineBase(ConanFile):
     name = "ProtocolStateMachine"
     version = "0.1.2"
     license = "(c) JoyStream Inc. 2016-2017"
-    url = "https://github.com/JoyStream/protocol_statemachine-conan.git"
+    url = "https://github.com/JoyStream/protocol_statemachine-cpp.git"
     repo_ssh_url = "git@github.com:JoyStream/protocol_statemachine-cpp.git"
-    repo_https_url = "https://github.com/JoyStream/protocol_statemachine-conan.git"
+    repo_https_url = "https://github.com/JoyStream/protocol_statemachine-cpp.git"
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
     requires = "ProtocolWire/0.1.2@joystream/stable", "PaymentChannel/0.1.2@joystream/stable",
