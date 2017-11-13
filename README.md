@@ -2,7 +2,7 @@
 # ProtocolStateMachine
 C++ statemachine library for the JoyStream extension protocol, as specified [here](http://#).
 
-Current published release: `ProtocolStateMachine/0.1.1@joystream/stable`
+conan package name: `ProtocolStateMachine/0.1.2@joystream/stable`
 
 ### Dependencies
 
@@ -27,4 +27,5 @@ sh run_tests.sh
 
 ## License & Copyright
 
-`...add later...`
+JoyStream protocol_statemachine library is released under the terms of the MIT license.
+See [LICENSE](LICENCE) for more information.
