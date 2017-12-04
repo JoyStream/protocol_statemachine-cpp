@@ -21,7 +21,8 @@ bool BuyingNavigator::Fixture::validatePayment(const Coin::Signature & payment, 
                                            joiningContract.message().finalPkHash(),
                                            contractPrepared.contractKeyPair().pk(),
                                            contractPrepared.finalPkHash(),
-                                           Coin::Signature());
+                                           Coin::Signature(),
+                                           Coin::Network::mainnet);
 
     return payee.registerPayment(payment);
 }
