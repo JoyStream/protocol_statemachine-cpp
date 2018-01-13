@@ -11,11 +11,11 @@
 namespace joystream {
 namespace protocol_statemachine {
 
-    ReadyForPieceRequest::ReadyForPieceRequest() {
-        std::cout << "Entering ReadyForPieceRequest state." << std::endl;
+    ServicingPieceRequests::ServicingPieceRequests() {
+        std::cout << "Entering ServicingPieceRequests state." << std::endl;
     }
 
-    sc::result ReadyForPieceRequest::react(const event::Recv<protocol_wire::RequestFullPiece> & e) {
+    sc::result ServicingPieceRequests::react(const event::Recv<protocol_wire::RequestFullPiece> & e) {
 
         std::cout << "Reacting to Recv<wire::RequestFullPiece> event." << std::endl;
 
@@ -34,8 +34,46 @@ namespace protocol_statemachine {
         context<CBStateMachine>()._pieceRequested(pieceIndex);
         context<CBStateMachine>()._lastRequestedPiece = pieceIndex;
 
-        // get ready to load the piece
-        return transit<ServicingPieceRequest>();
+        // return to ServicingPieceRequests state (internal reaction.. do we need to do a transition?)
+        return transit<ServicingPieceRequests>();
+    }
+
+    sc::result ServicingPieceRequests::react(const event::PieceLoaded & e) {
+
+        std::cout << "Reacting to PieceLoaded event." << std::endl;
+
+        // Send piece
+        context<CBStateMachine>()._sendFullPieceMessage(joystream::protocol_wire::FullPiece(e.pieceData()));
+
+        // return to ServicingPieceRequests state (internal reaction.. do we need to do a transition?)
+        return transit<ServicingPieceRequests>();
+    }
+
+    sc::result ServicingPieceRequests::react(const event::Recv<protocol_wire::Payment> & e) {
+
+        std::cout << "Reacting to Recv<wire::Payment>." << std::endl;
+
+        // Get payment signature
+        Coin::Signature payment = e.message().sig();
+
+        // Check validity of payment signature, and register if valid
+        bool valid = context<CBStateMachine>()._payee.registerPayment(payment);
+
+        if(valid) {
+
+            // Notify client about valid payment
+            context<CBStateMachine>()._validPayment(payment);
+
+            // return to ServicingPieceRequests state (internal reaction.. do we need to do a transition?)
+            return transit<ServicingPieceRequests>();
+        } else {
+
+            // Notify client about bad payment
+            context<CBStateMachine>()._invalidPayment(payment);
+
+            // Terminate machine
+            return terminate();
+        }
     }
 
 }
