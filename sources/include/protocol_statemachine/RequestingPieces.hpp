@@ -24,7 +24,7 @@ namespace protocol_statemachine {
 
         typedef boost::mpl::list<
                                 sc::custom_reaction<event::RequestPiece>,
-                                sc::custom_reaction<event::Recv<protocol_wire::FullPiece>>
+                                sc::custom_reaction<event::Recv<protocol_wire::FullPiece>>,
                                 sc::custom_reaction<event::SendPayment>,
                                 sc::custom_reaction<event::InvalidPieceReceived>
                                 > reactions;

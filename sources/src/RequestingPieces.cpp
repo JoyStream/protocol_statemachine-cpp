@@ -6,7 +6,6 @@
  */
 
 #include <protocol_statemachine/RequestingPieces.hpp>
-#include <protocol_statemachine/WaitingForFullPiece.hpp>
 #include <protocol_wire/protocol_wire.hpp>
 
 namespace joystream {
@@ -38,7 +37,7 @@ namespace protocol_statemachine {
         // We should be expecting a full piece
         if (outstandingPieces == 0) {
           // Inform client of overflow
-          context<CBStateMachine>()._receiveFullPieceOverflow();
+          context<CBStateMachine>()._receivedFullPieceOverflow();
 
           // Terminate the statemachine
           return terminate();
