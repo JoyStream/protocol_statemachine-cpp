@@ -46,10 +46,9 @@ set(
     src/WaitingForSellerToJoin.cpp
     src/SellerHasJoined.cpp
     src/PreparingContract.cpp
-    src/ReadyToRequestPiece.cpp
+    src/RequestingPieces.cpp
     src/LoadingPiece.cpp
-    src/WaitingForFullPiece.cpp
-    src/ProcessingPiece.cpp
+
 )
 
 # === build library ===

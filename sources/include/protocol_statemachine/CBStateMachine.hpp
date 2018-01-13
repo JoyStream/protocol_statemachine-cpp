@@ -186,10 +186,8 @@ namespace protocol_statemachine {
         friend class ReadyToInviteSeller;
         friend class WaitingForSellerToJoin;
         friend class PreparingContract;
-        friend class ProcessingPiece;
         friend class SellerHasJoined;
-        friend class ReadyToRequestPiece;
-        friend class WaitingForFullPiece;
+        friend class RequestingPieces;
 
         //// State modifiers
 
