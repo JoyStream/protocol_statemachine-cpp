@@ -31,6 +31,9 @@ namespace protocol_statemachine {
         sc::result react(const event::Recv<protocol_wire::Observe> &);
         sc::result react(const event::Recv<protocol_wire::Buy> &);
         sc::result react(const event::Recv<protocol_wire::Sell> &);
+
+        // Number of outstanding piece requests to be fulfilled by seller
+        int _outstandingRequests;
     };
 
 }

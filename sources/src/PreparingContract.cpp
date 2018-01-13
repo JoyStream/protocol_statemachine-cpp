@@ -6,7 +6,7 @@
  */
 
 #include <protocol_statemachine/PreparingContract.hpp>
-#include <protocol_statemachine/ReadyToRequestPiece.hpp>
+#include <protocol_statemachine/RequestingPieces.hpp>
 #include <protocol_wire/protocol_wire.hpp>
 
 namespace joystream {
@@ -29,8 +29,8 @@ namespace protocol_statemachine {
         // Send ready message
         context<CBStateMachine>()._sendReadyMessage(joystream::protocol_wire::Ready(e.value(), e.anchor(), e.contractKeyPair().pk(), e.finalPkHash()));
 
-        // Now ready to request first piece
-        return transit<ReadyToRequestPiece>();
+        // Now ready to start requesting pieces
+        return transit<RequestingPieces>();
     }
 }
 }
