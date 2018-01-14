@@ -10,9 +10,7 @@
 namespace joystream {
 namespace protocol_statemachine {
 
-    SellerHasJoined::SellerHasJoined() :
-      _outstandingRequests(0)
-    {
+    SellerHasJoined::SellerHasJoined() {
         std::cout << "Entering SellerJoined state." << std::endl;
     }
 

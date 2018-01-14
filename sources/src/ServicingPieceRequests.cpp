@@ -10,13 +10,19 @@
 namespace joystream {
 namespace protocol_statemachine {
 
-    ServicingPieceRequests::ServicingPieceRequests() {
+    ServicingPieceRequests::ServicingPieceRequests() :
+      _totalRequestsReceived(0),
+      _totalPiecesSent(0),
+      _totalPaymentsReceived(0)
+    {
         std::cout << "Entering ServicingPieceRequests state." << std::endl;
     }
 
     sc::result ServicingPieceRequests::react(const event::Recv<protocol_wire::RequestFullPiece> & e) {
 
         std::cout << "Reacting to Recv<wire::RequestFullPiece> event." << std::endl;
+
+        _totalRequestsReceived++;
 
         // Check that piece requested is valid,
         int pieceIndex = e.message().pieceIndex();
@@ -41,6 +47,10 @@ namespace protocol_statemachine {
 
         std::cout << "Reacting to PieceLoaded event." << std::endl;
 
+        _totalPiecesSent++;
+
+        // if (_totalPiecesSent > _totalRequestsReceived) overflow!
+
         // Send piece
         context<CBStateMachine>()._sendFullPieceMessage(joystream::protocol_wire::FullPiece(e.pieceData()));
 
@@ -51,6 +61,10 @@ namespace protocol_statemachine {
     sc::result ServicingPieceRequests::react(const event::Recv<protocol_wire::Payment> & e) {
 
         std::cout << "Reacting to Recv<wire::Payment>." << std::endl;
+
+        _totalPaymentsReceived++;
+
+        // if (_totalPaymentsReceived > _totalPiecesSent) overflow
 
         // Get payment signature
         Coin::Signature payment = e.message().sig();

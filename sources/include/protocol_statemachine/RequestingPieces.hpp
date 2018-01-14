@@ -36,6 +36,12 @@ namespace protocol_statemachine {
         sc::result react(const event::Recv<protocol_wire::FullPiece> &);
         sc::result react(const event::SendPayment &);
         sc::result react(const event::InvalidPieceReceived &);
+
+    private:
+
+        int _totalRequestsSent;
+        int _totalPiecesReceived;
+        int _totalPaymentsSent;
     };
 
 }

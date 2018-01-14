@@ -11,7 +11,10 @@
 namespace joystream {
 namespace protocol_statemachine {
 
-    RequestingPieces::RequestingPieces() {
+    RequestingPieces::RequestingPieces() :
+      _totalRequestsSent(0),
+      _totalPiecesReceived(0),
+      _totalPaymentsSent(0) {
         std::cout << "Entering RequestingPieces state." << std::endl;
     }
 
@@ -22,7 +25,7 @@ namespace protocol_statemachine {
         // Request piece from seller
         context<CBStateMachine>()._sendRequestFullPieceMessage(protocol_wire::RequestFullPiece(e.pieceIndex()));
 
-        context<SellerHasJoined>()._outstandingRequests++;
+        _totalRequestsSent++;
 
         // Remain in same state
         return discard_event();
@@ -32,10 +35,10 @@ namespace protocol_statemachine {
 
         std::cout << "Reacting to Recv<wire::FullPiece> event." << std::endl;
 
-        int outstandingPieces = context<SellerHasJoined>()._outstandingRequests;
+        _totalPiecesReceived++;
 
         // We should be expecting a full piece
-        if (outstandingPieces == 0) {
+        if (_totalPiecesReceived > _totalRequestsSent) {
           // Inform client of overflow
           context<CBStateMachine>()._receivedFullPieceOverflow();
 
@@ -46,8 +49,6 @@ namespace protocol_statemachine {
         // Send piece to client
         context<CBStateMachine>()._receivedFullPiece(e.message().pieceData());
 
-        context<SellerHasJoined>()._outstandingRequests--;
-
         // Remain in same state
         return discard_event();
     }
@@ -55,6 +56,10 @@ namespace protocol_statemachine {
     sc::result RequestingPieces::react(const event::SendPayment &) {
 
         std::cout << "Reacting to SendPayment event." << std::endl;
+
+        _totalPaymentsSent++;
+
+        // if (_totalPaymentsSent > _totalPiecesReceived) overflow!
 
         // Make payment signature
         Coin::Signature sig = context<CBStateMachine>()._payor.makePayment();
