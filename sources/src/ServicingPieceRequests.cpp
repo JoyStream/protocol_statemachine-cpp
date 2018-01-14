@@ -33,8 +33,8 @@ namespace protocol_statemachine {
         context<CBStateMachine>()._pieceRequested(pieceIndex);
         context<CBStateMachine>()._lastRequestedPiece = pieceIndex;
 
-        // return to ServicingPieceRequests state (internal reaction.. do we need to do a transition?)
-        return transit<ServicingPieceRequests>();
+        // Remain in same state
+        return discard_event();
     }
 
     sc::result ServicingPieceRequests::react(const event::PieceLoaded & e) {
@@ -44,8 +44,8 @@ namespace protocol_statemachine {
         // Send piece
         context<CBStateMachine>()._sendFullPieceMessage(joystream::protocol_wire::FullPiece(e.pieceData()));
 
-        // return to ServicingPieceRequests state (internal reaction.. do we need to do a transition?)
-        return transit<ServicingPieceRequests>();
+        // Remain in same state
+        return discard_event();
     }
 
     sc::result ServicingPieceRequests::react(const event::Recv<protocol_wire::Payment> & e) {
@@ -63,8 +63,8 @@ namespace protocol_statemachine {
             // Notify client about valid payment
             context<CBStateMachine>()._validPayment(payment);
 
-            // return to ServicingPieceRequests state (internal reaction.. do we need to do a transition?)
-            return transit<ServicingPieceRequests>();
+            // Remain in same state
+            return discard_event();
         } else {
 
             // Notify client about bad payment

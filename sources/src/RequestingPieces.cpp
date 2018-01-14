@@ -24,8 +24,8 @@ namespace protocol_statemachine {
 
         context<SellerHasJoined>()._outstandingRequests++;
 
-        // return to RequestingPieces state
-        return transit<RequestingPieces>();
+        // Remain in same state
+        return discard_event();
     }
 
     sc::result RequestingPieces::react(const event::Recv<protocol_wire::FullPiece> & e) {
@@ -48,8 +48,8 @@ namespace protocol_statemachine {
 
         context<SellerHasJoined>()._outstandingRequests--;
 
-        // return to RequestingPieces state
-        return transit<RequestingPieces>();
+        // Remain in same state
+        return discard_event();
     }
 
     sc::result RequestingPieces::react(const event::SendPayment &) {
@@ -62,8 +62,8 @@ namespace protocol_statemachine {
         // Send payment
         context<CBStateMachine>()._sendPaymentMessage(protocol_wire::Payment(sig));
 
-        // return to RequestingPieces state
-        return transit<RequestingPieces>();
+        // Remain in same state
+        return discard_event();
     }
 
     sc::result RequestingPieces::react(const event::InvalidPieceReceived &) {
