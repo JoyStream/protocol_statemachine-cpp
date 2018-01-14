@@ -180,10 +180,8 @@ namespace protocol_statemachine {
         friend class ReadyForInvitation;
         friend class Invited;
         friend class WaitingToStart;
-        friend class ServicingPieceRequest;
-        friend class WaitingForPayment;
-        friend class ReadyForPieceRequest;
-        friend class LoadingPiece;
+        friend class StartedSelling;
+        friend class ServicingPieceRequests;
 
         // Buying states
         friend class Buying;

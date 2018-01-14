@@ -5,8 +5,7 @@
  * Written by Bedeho Mender <bedeho.mender@gmail.com>, March 19 2016
  */
 
-#include <protocol_statemachine/ReadyForPieceRequest.hpp>
-#include <protocol_statemachine/ServicingPieceRequest.hpp>
+#include <protocol_statemachine/ServicingPieceRequests.hpp>
 
 namespace joystream {
 namespace protocol_statemachine {
