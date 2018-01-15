@@ -40,7 +40,7 @@ namespace protocol_statemachine {
         // We should be expecting a full piece
         if (_totalPiecesReceived > _totalRequestsSent) {
           // Inform client of overflow
-          context<CBStateMachine>()._receivedFullPieceOverflow();
+          context<CBStateMachine>()._remoteMessageOverflow();
 
           // Terminate the statemachine
           return terminate();
@@ -59,7 +59,13 @@ namespace protocol_statemachine {
 
         _totalPaymentsSent++;
 
-        // if (_totalPaymentsSent > _totalPiecesReceived) overflow!
+        if (_totalPaymentsSent > _totalPiecesReceived) {
+          // Inform client of overflow
+          context<CBStateMachine>()._localMessageOverflow();
+
+          // Terminate the statemachine
+          return terminate();
+        }
 
         // Make payment signature
         Coin::Signature sig = context<CBStateMachine>()._payor.makePayment();

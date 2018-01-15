@@ -49,7 +49,13 @@ namespace protocol_statemachine {
 
         _totalPiecesSent++;
 
-        // if (_totalPiecesSent > _totalRequestsReceived) overflow!
+        if (_totalPiecesSent > _totalRequestsReceived) {
+          // Inform client of overflow
+          context<CBStateMachine>()._localMessageOverflow();
+
+          // Terminate the statemachine
+          return terminate();
+        }
 
         // Send piece
         context<CBStateMachine>()._sendFullPieceMessage(joystream::protocol_wire::FullPiece(e.pieceData()));
@@ -64,7 +70,13 @@ namespace protocol_statemachine {
 
         _totalPaymentsReceived++;
 
-        // if (_totalPaymentsReceived > _totalPiecesSent) overflow
+        if (_totalPaymentsReceived > _totalPiecesSent) {
+          // Inform client of overflow
+          context<CBStateMachine>()._remoteMessageOverflow();
+
+          // Terminate the statemachine
+          return terminate();
+        }
 
         // Get payment signature
         Coin::Signature payment = e.message().sig();

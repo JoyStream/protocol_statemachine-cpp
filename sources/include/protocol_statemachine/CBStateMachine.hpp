@@ -105,8 +105,14 @@ namespace protocol_statemachine {
     // Peer, in seller mode, responded with full piece
     typedef std::function<void(const protocol_wire::PieceData &)> ReceivedFullPiece;
 
-    // Peer sent a full piece when we were not expecting one
-    typedef NoPayloadNotification ReceivedFullPieceOverflow;
+    // Peer or client sending/receving excess messages:
+    // Seller side:
+    //  - Receiving more Payment messages than expected (remote)
+    //  - Attempt to send more FullPiece messages than requested from buyer. (local)
+    // Buyer side:
+    //  - Receiving more FullPiece messages than expected (remote)
+    //  - Attempt to send more Payment messages than required. (local)
+    typedef NoPayloadNotification MessageOverflow;
 
     //// State machine
 
@@ -132,7 +138,8 @@ namespace protocol_statemachine {
                        const SellerJoined &,
                        const SellerInterruptedContract &,
                        const ReceivedFullPiece &,
-                       const ReceivedFullPieceOverflow &,
+                       const MessageOverflow &,
+                       const MessageOverflow &,
                        int);
 
         void processEvent(const sc::event_base &);
@@ -265,7 +272,8 @@ namespace protocol_statemachine {
         CallbackQueuer<> _sellerJoined;
         CallbackQueuer<> _sellerInterruptedContract;
         CallbackQueuer<const protocol_wire::PieceData &> _receivedFullPiece;
-        CallbackQueuer<> _receivedFullPieceOverflow;
+        CallbackQueuer<> _remoteMessageOverflow;
+        CallbackQueuer<> _localMessageOverflow;
 
         void peerAnnouncedMode();
 

@@ -29,7 +29,8 @@ namespace protocol_statemachine {
                                    const SellerJoined & sellerJoined,
                                    const SellerInterruptedContract & sellerInterruptedContract,
                                    const ReceivedFullPiece & receivedFullPiece,
-                                   const ReceivedFullPieceOverflow & receivedFullPieceOverflow,
+                                   const MessageOverflow & remoteMessageOverflow,
+                                   const MessageOverflow & localMessageOverflow,
                                    int MAX_PIECE_INDEX)
         : _currentlyProcessingCallbacks(false)
         , _peerAnnouncedMode(_queuedCallbacks, peerAnnouncedMode)
@@ -53,7 +54,8 @@ namespace protocol_statemachine {
         , _sellerJoined(_queuedCallbacks, sellerJoined)
         , _sellerInterruptedContract(_queuedCallbacks, sellerInterruptedContract)
         , _receivedFullPiece(_queuedCallbacks, receivedFullPiece)
-        , _receivedFullPieceOverflow(_queuedCallbacks, receivedFullPieceOverflow)
+        , _remoteMessageOverflow(_queuedCallbacks, remoteMessageOverflow)
+        , _localMessageOverflow(_queuedCallbacks, localMessageOverflow)
         , _MAX_PIECE_INDEX(MAX_PIECE_INDEX)
         , _lastRequestedPiece(0) {
     }
