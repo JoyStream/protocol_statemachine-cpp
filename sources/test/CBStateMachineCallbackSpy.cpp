@@ -476,3 +476,11 @@ protocol_wire::RequestFullPiece CBStateMachineCallbackSpy::requestFullPieceMessa
 protocol_wire::Sell CBStateMachineCallbackSpy::sellMessage() const {
     return _sellMessage;
 }
+
+bool CBStateMachineCallbackSpy::remoteOverflow() const {
+  return _remoteMessageOverflow;
+}
+
+bool CBStateMachineCallbackSpy::localOverflow() const {
+  return _localMessageOverflow;
+}

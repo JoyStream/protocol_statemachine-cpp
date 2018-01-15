@@ -107,6 +107,10 @@ public:
 
     bool hasReceivedFullPiece() const;
 
+    bool remoteOverflow() const;
+
+    bool localOverflow() const;
+
 private:
 
     // ***
