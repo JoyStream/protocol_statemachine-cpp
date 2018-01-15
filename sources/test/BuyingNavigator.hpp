@@ -52,7 +52,6 @@ public:
     // Fast forward routines
     void toBuyMode(CBStateMachine *);
     void toSellerHasJoined(CBStateMachine *);
-    void toProcessingPiece(CBStateMachine *);
 
 private:
 

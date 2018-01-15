@@ -33,18 +33,18 @@ void SellingNavigator::toSellMode(CBStateMachine * machine) {
     machine->processEvent(_fixture.sellModeStarted);
 }
 
-void SellingNavigator::toReadyForPieceRequest(CBStateMachine * machine) {
+void SellingNavigator::toServicingPieceRequests(CBStateMachine * machine) {
     machine->processEvent(_fixture.validJoinContract);
     machine->processEvent(_fixture.joinedContract);
     machine->processEvent(_fixture.contractReady);
 }
 
-void SellingNavigator::toLoadingPiece(CBStateMachine * machine) {
-    toReadyForPieceRequest(machine);
+void SellingNavigator::toReceivedRequest(CBStateMachine * machine) {
+    toServicingPieceRequests(machine);
     machine->processEvent(_fixture.validPieceRequest);
 }
 
-void SellingNavigator::toWaitingForPayment(CBStateMachine * machine) {
-    toLoadingPiece(machine);
+void SellingNavigator::toSentFullPiece(CBStateMachine * machine) {
+    toReceivedRequest(machine);
     machine->processEvent(_fixture.fullPiece);
 }

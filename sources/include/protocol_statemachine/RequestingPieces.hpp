@@ -5,33 +5,46 @@
  * Written by Bedeho Mender <bedeho.mender@gmail.com>, March 29 2016
  */
 
-#ifndef JOYSTREAM_PROTOCOL_STATEMACHINE_PROCESSINGPIECE_HPP
-#define JOYSTREAM_PROTOCOL_STATEMACHINE_PROCESSINGPIECE_HPP
+#ifndef JOYSTREAM_PROTOCOL_STATEMACHINE_REQUESTINGPIECES_HPP
+#define JOYSTREAM_PROTOCOL_STATEMACHINE_REQUESTINGPIECES_HPP
 
 #include <protocol_statemachine/SellerHasJoined.hpp>
+#include <protocol_statemachine/event/RequestPiece.hpp>
 #include <protocol_statemachine/event/SendPayment.hpp>
 #include <protocol_statemachine/event/InvalidPieceReceived.hpp>
+#include <protocol_statemachine/event/Recv.hpp>
+#include <protocol_wire/protocol_wire.hpp>
 
 namespace joystream {
 namespace protocol_statemachine {
 
-    class ProcessingPiece : public sc::simple_state<ProcessingPiece, SellerHasJoined> {
+    class RequestingPieces : public sc::simple_state<RequestingPieces, SellerHasJoined> {
 
     public:
 
         typedef boost::mpl::list<
+                                sc::custom_reaction<event::RequestPiece>,
+                                sc::custom_reaction<event::Recv<protocol_wire::FullPiece>>,
                                 sc::custom_reaction<event::SendPayment>,
                                 sc::custom_reaction<event::InvalidPieceReceived>
                                 > reactions;
 
-        ProcessingPiece();
+        RequestingPieces();
 
         // Event handlers
+        sc::result react(const event::RequestPiece &);
+        sc::result react(const event::Recv<protocol_wire::FullPiece> &);
         sc::result react(const event::SendPayment &);
         sc::result react(const event::InvalidPieceReceived &);
+
+    private:
+
+        int _totalRequestsSent;
+        int _totalPiecesReceived;
+        int _totalPaymentsSent;
     };
+
 }
 }
 
-#endif // JOYSTREAM_PROTOCOL_STATEMACHINE_PROCESSINGPIECE_HPP
-
+#endif // JOYSTREAM_PROTOCOL_STATEMACHINE_READYTOREQUESTPIECE_HPP

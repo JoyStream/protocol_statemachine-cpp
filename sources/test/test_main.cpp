@@ -194,7 +194,7 @@ TEST(statemachineTest, selling)
 
     spy.reset();
 
-    std::cout << "--- In ReadyForPieceRequest state ---" << std::endl;
+    std::cout << "--- In ServicingPieceRequests state ---" << std::endl;
 
     // Peer requests piece which is invalid
     machine->processEvent(f.invalidPieceRequest);
@@ -210,7 +210,7 @@ TEST(statemachineTest, selling)
     machine = spy.createMonitoredMachine();
     machine->processEvent(f.sellModeStarted);
     peerToBuyMode(machine, f.peerToBuyMode);
-    navigator.toReadyForPieceRequest(machine);
+    navigator.toServicingPieceRequests(machine);
     spy.reset();
 
     // Peer request valid piece
@@ -236,7 +236,7 @@ TEST(statemachineTest, selling)
     machine = spy.createMonitoredMachine();
     machine->processEvent(f.sellModeStarted);
     peerToBuyMode(machine, f.peerToBuyMode);
-    navigator.toLoadingPiece(machine);
+    navigator.toReceivedRequest(machine);
     spy.reset();
 
     peerToBuyMode(machine, f.peerToBuyMode);
@@ -249,7 +249,7 @@ TEST(statemachineTest, selling)
     machine = spy.createMonitoredMachine();
     machine->processEvent(f.sellModeStarted);
     peerToBuyMode(machine, f.peerToBuyMode);
-    navigator.toLoadingPiece(machine);
+    navigator.toReceivedRequest(machine);
     spy.reset();
 
     peerToObserveMode(machine);
@@ -261,7 +261,7 @@ TEST(statemachineTest, selling)
     machine = spy.createMonitoredMachine();
     machine->processEvent(f.sellModeStarted);
     peerToBuyMode(machine, f.peerToBuyMode);
-    navigator.toLoadingPiece(machine);
+    navigator.toReceivedRequest(machine);
     spy.reset();
 
     machine->processEvent(f.fullPiece);
@@ -271,8 +271,6 @@ TEST(statemachineTest, selling)
     EXPECT_EQ(spy.fullPieceMessage().pieceData(), f.fullPiece.pieceData());
 
     spy.reset();
-
-    std::cout << "--- In WaitingForPayment state ---" << std::endl;
 
     // Have peer send invalid payment!
     machine->processEvent(f.badPayment);
@@ -288,7 +286,7 @@ TEST(statemachineTest, selling)
     machine = spy.createMonitoredMachine();
     machine->processEvent(f.sellModeStarted);
     peerToBuyMode(machine, f.peerToBuyMode);
-    navigator.toWaitingForPayment(machine);
+    navigator.toSentFullPiece(machine);
     spy.reset();
 
     // Generate payor payment signature for first payment
@@ -301,7 +299,37 @@ TEST(statemachineTest, selling)
 
     spy.reset();
 
-    std::cout << "--- In ReadyForPieceRequest state ---" << std::endl;
+    std::cout << "--- buyer sending extra payment ---" << std::endl;
+
+    // Extra payment
+    // Generate payor payment signature for second payment
+    event::Recv<protocol_wire::Payment> extraPayment = f.goodPayment(payorContractSk, 2);
+    machine->processEvent(extraPayment);
+
+    // Should result in remote overflow notification
+    EXPECT_TRUE(spy.remoteOverflow());
+
+    delete machine;
+    machine = spy.createMonitoredMachine();
+    machine->processEvent(f.sellModeStarted);
+    peerToBuyMode(machine, f.peerToBuyMode);
+    navigator.toServicingPieceRequests(machine);
+    spy.reset();
+
+    // Send unsolicited full piece
+    machine->processEvent(f.fullPiece);
+
+    // Should result in local overflow notification
+    EXPECT_TRUE(spy.localOverflow());
+    // Full piece not sent
+    EXPECT_FALSE(spy.messageSent());
+
+    delete machine;
+    machine = spy.createMonitoredMachine();
+    machine->processEvent(f.sellModeStarted);
+    peerToBuyMode(machine, f.peerToBuyMode);
+    navigator.toSentFullPiece(machine);
+    spy.reset();
 
     // Client transition to Buy mode
     protocol_wire::BuyerTerms newBuyerTerms(7, 7, 7, 7);
@@ -432,7 +460,7 @@ TEST(statemachineTest, buying)
 
     spy.reset();
 
-    std::cout << "--- In ReadyToRequestPiece state ---" << std::endl;
+    std::cout << "--- In RequestingPieces state ---" << std::endl;
 
     // Client requests a piece
     machine->processEvent(f.requestPiece);
@@ -443,8 +471,6 @@ TEST(statemachineTest, buying)
 
     spy.reset();
 
-    std::cout << "--- In WaitingForFullPiece state ---" << std::endl;
-
     // Peer sends piece back to client
     machine->processEvent(f.fullPiece);
 
@@ -452,8 +478,6 @@ TEST(statemachineTest, buying)
     EXPECT_EQ(spy.pieceData(), f.fullPiece.message().pieceData());
 
     spy.reset();
-
-    std::cout << "--- In ProcessingPiece state ---" << std::endl;
 
     // Client says piece was valid, and payment is sent
     machine->processEvent(event::SendPayment());
@@ -472,11 +496,36 @@ TEST(statemachineTest, buying)
     EXPECT_EQ(spy.messageType(), MessageType::buy);
     EXPECT_EQ(spy.buyMessage().terms(), testTerms);
 
-    spy.reset();
+    // Buying state reset
+    std::cout << " -- Buying state reset " << std::endl;
+
+    navigator.toSellerHasJoined(machine);
+    machine->processEvent(f.contractPrepared);
+
+    // Peer sends a piece back to client, without being requested
+    machine->processEvent(f.fullPiece);
+    EXPECT_TRUE(spy.remoteOverflow());
 
     // Clean up machine
     delete machine;
 
+    machine = spy.createMonitoredMachine();
+    navigator.toBuyMode(machine);
+    peerToSellMode(machine, f.peerToSellMode);
+    navigator.toSellerHasJoined(machine);
+    machine->processEvent(f.contractPrepared);
+
+    spy.reset();
+
+    // Sending a payment without first requesting or getting a full piece
+    machine->processEvent(event::SendPayment());
+
+    // results in local overflow notification
+    EXPECT_TRUE(spy.localOverflow());
+    // message should not have been sent
+    EXPECT_FALSE(spy.messageSent());
+
+    delete machine;
 }
 
 int main(int argc, char *argv[])
