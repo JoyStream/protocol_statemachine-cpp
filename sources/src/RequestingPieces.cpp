@@ -59,7 +59,8 @@ namespace protocol_statemachine {
 
         _totalPaymentsSent++;
 
-        if (_totalPaymentsSent > _totalPiecesReceived) {
+        // Allow for polite seller compensations
+        if (_totalPaymentsSent > _totalRequestsSent) {
           // Inform client of overflow
           context<CBStateMachine>()._localMessageOverflow();
 

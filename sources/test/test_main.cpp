@@ -299,7 +299,7 @@ TEST(statemachineTest, selling)
 
     spy.reset();
 
-    std::cout << "--- buyer sending extra payment ---" << std::endl;
+    std::cout << "--- buyer sending extra payment for unrequested piece ---" << std::endl;
 
     // Extra payment
     // Generate payor payment signature for second payment
@@ -517,7 +517,7 @@ TEST(statemachineTest, buying)
 
     spy.reset();
 
-    // Sending a payment without first requesting or getting a full piece
+    // Sending a payment without first requesting
     machine->processEvent(event::SendPayment());
 
     // results in local overflow notification
