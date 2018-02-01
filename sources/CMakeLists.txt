@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 project(ProtocoStateMachine CXX)
 
-add_definitions(-DMAJOR_PROTOCOL_VERSION=1)
+add_definitions(-DMAJOR_PROTOCOL_VERSION=2)
 add_definitions(-DMINOR_PROTOCOL_VERSION=0)
 
 option(build_tests "build tests" OFF)
@@ -30,7 +30,6 @@ set(
     src/detail/InitializeBuying.cpp
     src/detail/InitializeSelling.cpp
     src/AnnouncedModeAndTerms.cpp
-    src/ServicingPieceRequest.cpp
     src/CBStateMachine.cpp
     src/ChooseMode.cpp
     src/Active.cpp
@@ -40,16 +39,13 @@ set(
     src/ReadyForInvitation.cpp
     src/Invited.cpp
     src/WaitingToStart.cpp
-    src/ReadyForPieceRequest.cpp
-    src/WaitingForPayment.cpp
+    src/StartedSelling.cpp
+    src/ServicingPieceRequests.cpp
     src/ReadyToInviteSeller.cpp
     src/WaitingForSellerToJoin.cpp
     src/SellerHasJoined.cpp
     src/PreparingContract.cpp
-    src/ReadyToRequestPiece.cpp
-    src/LoadingPiece.cpp
-    src/WaitingForFullPiece.cpp
-    src/ProcessingPiece.cpp
+    src/RequestingPieces.cpp
 )
 
 # === build library ===

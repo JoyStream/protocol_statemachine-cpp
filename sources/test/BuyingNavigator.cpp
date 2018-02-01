@@ -39,10 +39,3 @@ void BuyingNavigator::toSellerHasJoined(protocol_statemachine::CBStateMachine * 
     machine->processEvent(_fixture.inviteSeller);
     machine->processEvent(_fixture.joiningContract);
 }
-
-void BuyingNavigator::toProcessingPiece(protocol_statemachine::CBStateMachine * machine) {
-    toSellerHasJoined(machine);
-    machine->processEvent(_fixture.contractPrepared);
-    machine->processEvent(_fixture.requestPiece);
-    machine->processEvent(_fixture.fullPiece);
-}

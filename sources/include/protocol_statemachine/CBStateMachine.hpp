@@ -105,6 +105,15 @@ namespace protocol_statemachine {
     // Peer, in seller mode, responded with full piece
     typedef std::function<void(const protocol_wire::PieceData &)> ReceivedFullPiece;
 
+    // Peer or client sending/receving excess messages:
+    // Seller side:
+    //  - Receiving more Payment messages than expected (remote)
+    //  - Attempt to send more FullPiece messages than requested from buyer. (local)
+    // Buyer side:
+    //  - Receiving more FullPiece messages than expected (remote)
+    //  - Attempt to send more Payment messages than required. (local)
+    typedef NoPayloadNotification MessageOverflow;
+
     //// State machine
 
     class ChooseMode; // Default state
@@ -129,6 +138,8 @@ namespace protocol_statemachine {
                        const SellerJoined &,
                        const SellerInterruptedContract &,
                        const ReceivedFullPiece &,
+                       const MessageOverflow &,
+                       const MessageOverflow &,
                        int);
 
         void processEvent(const sc::event_base &);
@@ -176,20 +187,16 @@ namespace protocol_statemachine {
         friend class ReadyForInvitation;
         friend class Invited;
         friend class WaitingToStart;
-        friend class ServicingPieceRequest;
-        friend class WaitingForPayment;
-        friend class ReadyForPieceRequest;
-        friend class LoadingPiece;
+        friend class StartedSelling;
+        friend class ServicingPieceRequests;
 
         // Buying states
         friend class Buying;
         friend class ReadyToInviteSeller;
         friend class WaitingForSellerToJoin;
         friend class PreparingContract;
-        friend class ProcessingPiece;
         friend class SellerHasJoined;
-        friend class ReadyToRequestPiece;
-        friend class WaitingForFullPiece;
+        friend class RequestingPieces;
 
         //// State modifiers
 
@@ -265,6 +272,8 @@ namespace protocol_statemachine {
         CallbackQueuer<> _sellerJoined;
         CallbackQueuer<> _sellerInterruptedContract;
         CallbackQueuer<const protocol_wire::PieceData &> _receivedFullPiece;
+        CallbackQueuer<> _remoteMessageOverflow;
+        CallbackQueuer<> _localMessageOverflow;
 
         void peerAnnouncedMode();
 

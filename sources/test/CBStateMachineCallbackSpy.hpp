@@ -107,6 +107,10 @@ public:
 
     bool hasReceivedFullPiece() const;
 
+    bool remoteOverflow() const;
+
+    bool localOverflow() const;
+
 private:
 
     // ***
@@ -170,6 +174,10 @@ private:
     // ReceivedFullPiece
     bool _hasReceivedFullPiece;
     protocol_wire::PieceData _pieceData;
+
+    // Message overflow occured
+    bool _remoteMessageOverflow;
+    bool _localMessageOverflow;
 };
 
 #endif // CBSTATEMACHINECALLBACKSPY

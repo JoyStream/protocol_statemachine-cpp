@@ -6,7 +6,7 @@
  */
 
 #include <protocol_statemachine/WaitingToStart.hpp>
-#include <protocol_statemachine/ReadyForPieceRequest.hpp>
+#include <protocol_statemachine/StartedSelling.hpp>
 
 #include <iostream>
 
@@ -33,7 +33,7 @@ namespace protocol_statemachine {
         context<CBStateMachine>()._contractIsReady(m.value(), m.anchor(), m.contractPk(), m.finalPkHash());
 
         // Transition to deep history
-        return transit<ReadyForPieceRequest>();
+        return transit<StartedSelling>();
     }
 
 }

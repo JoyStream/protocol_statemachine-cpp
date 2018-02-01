@@ -58,9 +58,9 @@ public:
     SellingNavigator(Fixture fixture);
 
     void toSellMode(CBStateMachine *);
-    void toReadyForPieceRequest(CBStateMachine *);
-    void toLoadingPiece(CBStateMachine *);
-    void toWaitingForPayment(CBStateMachine *);
+    void toServicingPieceRequests(CBStateMachine *);
+    void toReceivedRequest(CBStateMachine *);
+    void toSentFullPiece(CBStateMachine *);
 
 private:
 

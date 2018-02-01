@@ -125,6 +125,12 @@ protocol_statemachine::CBStateMachine * CBStateMachineCallbackSpy::createMonitor
         _hasReceivedFullPiece = true;
         _pieceData = p;
     },
+    [this](){
+        _remoteMessageOverflow = true;
+    },
+    [this](){
+        _localMessageOverflow = true;
+    },
     MAX_PIECE_INDEX);
 
     // Initiate machine
@@ -182,6 +188,9 @@ void CBStateMachineCallbackSpy::reset() {
     // ReceivedFullPiece
     _hasReceivedFullPiece = false;
     _pieceData = protocol_wire::PieceData();
+
+    _remoteMessageOverflow = false;
+    _localMessageOverflow = false;
 }
 
 bool CBStateMachineCallbackSpy::peerHasAnnouncedMode() const {
@@ -466,4 +475,12 @@ protocol_wire::RequestFullPiece CBStateMachineCallbackSpy::requestFullPieceMessa
 
 protocol_wire::Sell CBStateMachineCallbackSpy::sellMessage() const {
     return _sellMessage;
+}
+
+bool CBStateMachineCallbackSpy::remoteOverflow() const {
+  return _remoteMessageOverflow;
+}
+
+bool CBStateMachineCallbackSpy::localOverflow() const {
+  return _localMessageOverflow;
 }

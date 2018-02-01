@@ -16,19 +16,15 @@
 #include <protocol_statemachine/CBStateMachine.hpp>
 #include <protocol_statemachine/ChooseMode.hpp>
 #include <protocol_statemachine/Invited.hpp>
-#include <protocol_statemachine/LoadingPiece.hpp>
 #include <protocol_statemachine/ModeAnnounced.hpp>
 #include <protocol_statemachine/Observing.hpp>
-#include <protocol_statemachine/ProcessingPiece.hpp>
 #include <protocol_statemachine/ReadyForInvitation.hpp>
-#include <protocol_statemachine/ReadyForPieceRequest.hpp>
-#include <protocol_statemachine/ReadyToRequestPiece.hpp>
+#include <protocol_statemachine/RequestingPieces.hpp>
 #include <protocol_statemachine/SellerHasJoined.hpp>
 #include <protocol_statemachine/Selling.hpp>
-#include <protocol_statemachine/ServicingPieceRequest.hpp>
-#include <protocol_statemachine/WaitingForFullPiece.hpp>
-#include <protocol_statemachine/WaitingForPayment.hpp>
+#include <protocol_statemachine/ServicingPieceRequests.hpp>
 #include <protocol_statemachine/WaitingForSellerToJoin.hpp>
 #include <protocol_statemachine/WaitingToStart.hpp>
+#include <protocol_statemachine/StartedSelling.hpp>
 
 #endif // JOYSTREAM_PROTOCOLSTATEMACHINE_HPP
