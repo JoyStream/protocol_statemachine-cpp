@@ -2,7 +2,7 @@
 # ProtocolStateMachine
 C++ statemachine library for the JoyStream extension protocol, as specified [here](http://#).
 
-conan package name: `ProtocolStateMachine/0.1.2@joystream/stable`
+conan package name: `ProtocolStateMachine/0.2.0@joystream/stable`
 
 ### Dependencies
 
