@@ -5,16 +5,16 @@
  * Written by Bedeho Mender <bedeho.mender@gmail.com>, March 8 2016
  */
 
-#include <protocol_statemachine/ServicingPieceRequest.hpp>
+#include <protocol_statemachine/StartedSelling.hpp>
 
 namespace joystream {
 namespace protocol_statemachine {
 
-    ServicingPieceRequest::ServicingPieceRequest() {
-        std::cout << "Entering ServicingPieceRequest state." << std::endl;
+    StartedSelling::StartedSelling() {
+        std::cout << "Entering StartedSelling state." << std::endl;
     }
 
-    sc::result ServicingPieceRequest::react(const event::Recv<protocol_wire::Observe> &) {
+    sc::result StartedSelling::react(const event::Recv<protocol_wire::Observe> &) {
 
         std::cout << "Reacting to Recv<wire::Observe> event." << std::endl;
 
@@ -29,7 +29,7 @@ namespace protocol_statemachine {
         return terminate();
     }
 
-    sc::result ServicingPieceRequest::react(const event::Recv<protocol_wire::Buy> & e) {
+    sc::result StartedSelling::react(const event::Recv<protocol_wire::Buy> & e) {
 
         std::cout << "Reacting to Recv<wire::Buy> event." << std::endl;
 
@@ -43,7 +43,7 @@ namespace protocol_statemachine {
         return terminate();
     }
 
-    sc::result ServicingPieceRequest::react(const event::Recv<protocol_wire::Sell> & e) {
+    sc::result StartedSelling::react(const event::Recv<protocol_wire::Sell> & e) {
 
         std::cout << "Reacting to Recv<wire::Sell> event." << std::endl;
 

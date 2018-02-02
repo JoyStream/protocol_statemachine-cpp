@@ -3,7 +3,7 @@ import os
 
 class ProtocolStateMachineBase(ConanFile):
     name = "ProtocolStateMachine"
-    version = "0.1.2"
+    version = "0.2.0"
     license = "(c) JoyStream Inc. 2016-2017"
     url = "https://github.com/JoyStream/protocol_statemachine-cpp.git"
     repo_ssh_url = "git@github.com:JoyStream/protocol_statemachine-cpp.git"
