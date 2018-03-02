@@ -140,7 +140,8 @@ namespace protocol_statemachine {
                        const ReceivedFullPiece &,
                        const MessageOverflow &,
                        const MessageOverflow &,
-                       int);
+                       int,
+                       Coin::Network network);
 
         void processEvent(const sc::event_base &);
 

@@ -31,7 +31,8 @@ namespace protocol_statemachine {
                                    const ReceivedFullPiece & receivedFullPiece,
                                    const MessageOverflow & remoteMessageOverflow,
                                    const MessageOverflow & localMessageOverflow,
-                                   int MAX_PIECE_INDEX)
+                                   int MAX_PIECE_INDEX,
+                                   Coin::Network network)
         : _currentlyProcessingCallbacks(false)
         , _peerAnnouncedMode(_queuedCallbacks, peerAnnouncedMode)
         , _invitedToOutdatedContract(_queuedCallbacks, invitedToOutdatedContract)
@@ -57,7 +58,9 @@ namespace protocol_statemachine {
         , _remoteMessageOverflow(_queuedCallbacks, remoteMessageOverflow)
         , _localMessageOverflow(_queuedCallbacks, localMessageOverflow)
         , _MAX_PIECE_INDEX(MAX_PIECE_INDEX)
-        , _lastRequestedPiece(0) {
+        , _lastRequestedPiece(0)
+        , _payor(network)
+        , _payee(network) {
     }
 
     void CBStateMachine::processEvent(const sc::event_base & e) {
