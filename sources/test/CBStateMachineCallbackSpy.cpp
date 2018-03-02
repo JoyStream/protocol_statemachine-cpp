@@ -131,7 +131,8 @@ protocol_statemachine::CBStateMachine * CBStateMachineCallbackSpy::createMonitor
     [this](){
         _localMessageOverflow = true;
     },
-    MAX_PIECE_INDEX);
+    MAX_PIECE_INDEX,
+    Coin::Network::mainnet);
 
     // Initiate machine
     machine->initiate();
