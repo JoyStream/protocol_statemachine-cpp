@@ -32,6 +32,7 @@ namespace protocol_statemachine {
                                    const MessageOverflow & remoteMessageOverflow,
                                    const MessageOverflow & localMessageOverflow,
                                    const SellerCompletedSpeedTest & sellerCompletedSpeedTest,
+                                   const BuyerRequestedSpeedTest & buyerRequestedSpeedTest,
                                    int MAX_PIECE_INDEX,
                                    Coin::Network network)
         : _currentlyProcessingCallbacks(false)
@@ -61,6 +62,7 @@ namespace protocol_statemachine {
         , _remoteMessageOverflow(_queuedCallbacks, remoteMessageOverflow)
         , _localMessageOverflow(_queuedCallbacks, localMessageOverflow)
         , _sellerCompletedSpeedTest(_queuedCallbacks, sellerCompletedSpeedTest)
+        , _buyerRequestedSpeedTest(_queuedCallbacks, buyerRequestedSpeedTest)
         , _MAX_PIECE_INDEX(MAX_PIECE_INDEX)
         , _lastRequestedPiece(0)
         , _payor(network)

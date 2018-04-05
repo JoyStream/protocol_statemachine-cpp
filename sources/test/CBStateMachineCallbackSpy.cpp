@@ -148,6 +148,10 @@ protocol_statemachine::CBStateMachine * CBStateMachineCallbackSpy::createMonitor
     [this](){
         _sellerCompletedSpeedTest = true;
     },
+    [this](uint32_t payloadSize) {
+        _buyerRequestedSpeedTest = true;
+        _requestedPayloadSize = payloadSize;
+    },
     MAX_PIECE_INDEX,
     Coin::Network::mainnet);
 
@@ -211,6 +215,8 @@ void CBStateMachineCallbackSpy::reset() {
     _localMessageOverflow = false;
 
     _sellerCompletedSpeedTest = false;
+
+    _buyerRequestedSpeedTest = false;
 }
 
 bool CBStateMachineCallbackSpy::peerHasAnnouncedMode() const {

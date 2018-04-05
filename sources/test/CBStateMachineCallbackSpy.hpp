@@ -187,6 +187,9 @@ private:
 
     // SpeedTest completed
     bool _sellerCompletedSpeedTest;
+
+    bool _buyerRequestedSpeedTest;
+    uint32_t _requestedPayloadSize;
 };
 
 #endif // CBSTATEMACHINECALLBACKSPY

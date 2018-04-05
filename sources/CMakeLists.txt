@@ -49,6 +49,7 @@ set(
     src/PreparingContract.cpp
     src/RequestingPieces.cpp
     src/TestingSellerSpeed.cpp
+    src/ReadyToSendTestPayload.cpp
 )
 
 # === build library ===

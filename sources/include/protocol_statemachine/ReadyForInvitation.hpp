@@ -20,13 +20,15 @@ namespace protocol_statemachine {
     public:
 
         typedef boost::mpl::list<
-                                sc::custom_reaction<event::Recv<protocol_wire::JoinContract>>
+                                sc::custom_reaction<event::Recv<protocol_wire::JoinContract>>,
+                                sc::custom_reaction<event::Recv<protocol_wire::SpeedTestRequest>>
                                 > reactions;
 
         ReadyForInvitation();
 
         // Event handlers
         sc::result react(const event::Recv<protocol_wire::JoinContract> &);
+        sc::result react(const event::Recv<protocol_wire::SpeedTestRequest> &);
 
     };
 }

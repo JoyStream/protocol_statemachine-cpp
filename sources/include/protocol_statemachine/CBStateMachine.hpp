@@ -100,6 +100,9 @@ namespace protocol_statemachine {
     // Peer sent an invalid payment signature
     typedef std::function<void(const Coin::Signature &)> InvalidPayment;
 
+    // Peer requested speed test
+    typedef std::function<void(uint32_t)> BuyerRequestedSpeedTest;
+
     //// Buying Notifications
 
     // Peer sent the speedtest payload
@@ -150,6 +153,7 @@ namespace protocol_statemachine {
                        const MessageOverflow &,
                        const MessageOverflow &,
                        const SellerCompletedSpeedTest &,
+                       const BuyerRequestedSpeedTest &,
                        int,
                        Coin::Network network);
 
@@ -200,6 +204,7 @@ namespace protocol_statemachine {
         friend class WaitingToStart;
         friend class StartedSelling;
         friend class ServicingPieceRequests;
+        friend class ReadyToSendTestPayload;
 
         // Buying states
         friend class Buying;
@@ -293,6 +298,7 @@ namespace protocol_statemachine {
         CallbackQueuer<> _remoteMessageOverflow;
         CallbackQueuer<> _localMessageOverflow;
         CallbackQueuer<> _sellerCompletedSpeedTest;
+        CallbackQueuer<uint32_t> _buyerRequestedSpeedTest;
 
         void peerAnnouncedMode();
 
@@ -319,9 +325,7 @@ namespace protocol_statemachine {
         // Index of last piece requested
         int _lastRequestedPiece;
 
-        // time_t _speedTestStartedAt;
-        // time_t _payloadDeliveredAt;
-        // uint32_t _lastTestPayloadSize;
+        uint32_t _requestedTestPayloadSize;
     };
 
     template<typename T>
