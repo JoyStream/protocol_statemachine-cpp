@@ -31,6 +31,7 @@ namespace protocol_statemachine {
                                    const ReceivedFullPiece & receivedFullPiece,
                                    const MessageOverflow & remoteMessageOverflow,
                                    const MessageOverflow & localMessageOverflow,
+                                   const SellerCompletedSpeedTest & sellerCompletedSpeedTest,
                                    int MAX_PIECE_INDEX,
                                    Coin::Network network)
         : _currentlyProcessingCallbacks(false)
@@ -46,6 +47,8 @@ namespace protocol_statemachine {
         , _sendRequestFullPieceMessage(_queuedCallbacks, send.request_full_piece)
         , _sendFullPieceMessage(_queuedCallbacks, send.full_piece)
         , _sendPaymentMessage(_queuedCallbacks, send.payment)
+        , _sendSpeedTestRequestMessage(_queuedCallbacks, send.speedTestRequest)
+        , _sendSpeedTestPayloadMessage(_queuedCallbacks, send.speedTestPayload)
         , _contractIsReady(_queuedCallbacks, contractIsReady)
         , _pieceRequested(_queuedCallbacks, pieceRequested)
         , _invalidPieceRequested(_queuedCallbacks, invalidPieceRequested)
@@ -57,6 +60,7 @@ namespace protocol_statemachine {
         , _receivedFullPiece(_queuedCallbacks, receivedFullPiece)
         , _remoteMessageOverflow(_queuedCallbacks, remoteMessageOverflow)
         , _localMessageOverflow(_queuedCallbacks, localMessageOverflow)
+        , _sellerCompletedSpeedTest(_queuedCallbacks, sellerCompletedSpeedTest)
         , _MAX_PIECE_INDEX(MAX_PIECE_INDEX)
         , _lastRequestedPiece(0)
         , _payor(network)
@@ -169,6 +173,18 @@ namespace protocol_statemachine {
 
         // Send mode message
         _sendBuyMessage(protocol_wire::Buy(t));
+    }
+
+
+    void CBStateMachine::sentSpeedTestRequest() {
+      // record the time using resolution timer?
+    }
+
+    void CBStateMachine::receivedTestPayload() {
+      // record the time using resolution timer?
+      // leave it to the client to calculate the time it took to deliver payload?
+      // or send it as argument in the notification call?
+      _sellerCompletedSpeedTest();
     }
 
     void CBStateMachine::peerAnnouncedMode() {

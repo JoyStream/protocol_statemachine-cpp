@@ -33,6 +33,8 @@ namespace protocol_wire {
     class BuyerTerms;
     class Ready;
     class PieceData;
+    class SpeedTestRequest;
+    class SpeedTestPayload;
 }
 
 namespace protocol_statemachine {
@@ -55,6 +57,8 @@ namespace protocol_statemachine {
     typedef std::function<void(const protocol_wire::RequestFullPiece&)> SendRequestFullPieceMessage;
     typedef std::function<void(const protocol_wire::FullPiece&)> SendFullPieceMessage;
     typedef std::function<void(const protocol_wire::Payment&)> SendPaymentMessage;
+    typedef std::function<void(const protocol_wire::SpeedTestRequest&)> SendSpeedTestRequestMessage;
+    typedef std::function<void(const protocol_wire::SpeedTestPayload&)> SendSpeedTestPayloadMessage;
 
     struct Send {
         SendObserveMessage observe;
@@ -66,6 +70,8 @@ namespace protocol_statemachine {
         SendRequestFullPieceMessage request_full_piece;
         SendFullPieceMessage full_piece;
         SendPaymentMessage payment;
+        SendSpeedTestRequestMessage speedTestRequest;
+        SendSpeedTestPayloadMessage speedTestPayload;
     };
 
     //// Selling Notifications
@@ -95,6 +101,9 @@ namespace protocol_statemachine {
     typedef std::function<void(const Coin::Signature &)> InvalidPayment;
 
     //// Buying Notifications
+
+    // Peer sent the speedtest payload
+    typedef NoPayloadNotification SellerCompletedSpeedTest;
 
     // Peer, in seller mode, joined the most recent invitation
     typedef NoPayloadNotification SellerJoined;
@@ -140,6 +149,7 @@ namespace protocol_statemachine {
                        const ReceivedFullPiece &,
                        const MessageOverflow &,
                        const MessageOverflow &,
+                       const SellerCompletedSpeedTest &,
                        int,
                        Coin::Network network);
 
@@ -194,6 +204,7 @@ namespace protocol_statemachine {
         // Buying states
         friend class Buying;
         friend class ReadyToInviteSeller;
+        friend class TestingSellerSpeed;
         friend class WaitingForSellerToJoin;
         friend class PreparingContract;
         friend class SellerHasJoined;
@@ -210,6 +221,10 @@ namespace protocol_statemachine {
         void clientToObserveMode();
         void clientToSellMode(const protocol_wire::SellerTerms &, uint32_t = 0);
         void clientToBuyMode(const protocol_wire::BuyerTerms &);
+
+        // Speed testing
+        void sentSpeedTestRequest();
+        void receivedTestPayload();
 
         //// Callbacks
 
@@ -263,6 +278,8 @@ namespace protocol_statemachine {
         CallbackQueuer<const protocol_wire::RequestFullPiece&> _sendRequestFullPieceMessage;
         CallbackQueuer<const protocol_wire::FullPiece&> _sendFullPieceMessage;
         CallbackQueuer<const protocol_wire::Payment&> _sendPaymentMessage;
+        CallbackQueuer<const protocol_wire::SpeedTestRequest&> _sendSpeedTestRequestMessage;
+        CallbackQueuer<const protocol_wire::SpeedTestPayload&> _sendSpeedTestPayloadMessage;
 
         CallbackQueuer<uint64_t, const Coin::typesafeOutPoint &, const Coin::PublicKey &, const Coin::PubKeyHash &> _contractIsReady;
         CallbackQueuer<int> _pieceRequested;
@@ -275,6 +292,7 @@ namespace protocol_statemachine {
         CallbackQueuer<const protocol_wire::PieceData &> _receivedFullPiece;
         CallbackQueuer<> _remoteMessageOverflow;
         CallbackQueuer<> _localMessageOverflow;
+        CallbackQueuer<> _sellerCompletedSpeedTest;
 
         void peerAnnouncedMode();
 
@@ -300,6 +318,10 @@ namespace protocol_statemachine {
 
         // Index of last piece requested
         int _lastRequestedPiece;
+
+        // time_t _speedTestStartedAt;
+        // time_t _payloadDeliveredAt;
+        // uint32_t _lastTestPayloadSize;
     };
 
     template<typename T>

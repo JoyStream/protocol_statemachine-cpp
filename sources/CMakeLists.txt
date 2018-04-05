@@ -24,9 +24,11 @@ set(
     src/event/Joined.cpp
     src/event/PieceLoaded.cpp
     src/event/InviteSeller.cpp
+    src/event/TestSellerSpeed.cpp
     src/exception/InvitedToJoinContractByNonBuyer.cpp
     src/exception/StateIncompatibleEvent.cpp
     src/exception/CannotInviteNonSeller.cpp
+    src/exception/CannotSpeedTestNonSeller.cpp
     src/detail/InitializeBuying.cpp
     src/detail/InitializeSelling.cpp
     src/AnnouncedModeAndTerms.cpp
@@ -46,6 +48,7 @@ set(
     src/SellerHasJoined.cpp
     src/PreparingContract.cpp
     src/RequestingPieces.cpp
+    src/TestingSellerSpeed.cpp
 )
 
 # === build library ===
