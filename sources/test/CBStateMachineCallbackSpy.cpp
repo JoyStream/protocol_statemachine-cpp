@@ -504,3 +504,7 @@ bool CBStateMachineCallbackSpy::remoteOverflow() const {
 bool CBStateMachineCallbackSpy::localOverflow() const {
   return _localMessageOverflow;
 }
+
+bool CBStateMachineCallbackSpy::sellerCompletedSpeedTest() const {
+  return _sellerCompletedSpeedTest;
+}

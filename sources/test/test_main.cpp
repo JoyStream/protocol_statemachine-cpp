@@ -398,6 +398,15 @@ TEST(statemachineTest, buying)
 
     spy.reset();
 
+    // Speedtest the peer
+    navigator.toCompletedTestingSellerSpeed(machine, 20000);
+
+    EXPECT_TRUE(spy.messageSent());
+    EXPECT_EQ(spy.messageType(), MessageType::speedTestRequest);
+    EXPECT_TRUE(spy.sellerCompletedSpeedTest());
+
+    spy.reset();
+
     // Invite seller peer
     machine->processEvent(f.inviteSeller);
 

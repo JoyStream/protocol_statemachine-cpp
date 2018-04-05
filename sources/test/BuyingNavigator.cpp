@@ -35,6 +35,12 @@ void BuyingNavigator::toBuyMode(protocol_statemachine::CBStateMachine * machine)
     machine->processEvent(_fixture.buyModeStarted);
 }
 
+void BuyingNavigator::toCompletedTestingSellerSpeed(protocol_statemachine::CBStateMachine * machine, uint32_t payloadSize) {
+    event::TestSellerSpeed testSellerSpeed(payloadSize);
+    machine->processEvent(testSellerSpeed);
+    machine->processEvent(_fixture.receiveSpeedTestPayload);
+}
+
 void BuyingNavigator::toSellerHasJoined(protocol_statemachine::CBStateMachine * machine) {
     machine->processEvent(_fixture.peerToSellMode);
     machine->processEvent(_fixture.inviteSeller);

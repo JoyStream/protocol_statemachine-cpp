@@ -113,6 +113,8 @@ public:
 
     bool localOverflow() const;
 
+    bool sellerCompletedSpeedTest() const;
+
 private:
 
     // ***

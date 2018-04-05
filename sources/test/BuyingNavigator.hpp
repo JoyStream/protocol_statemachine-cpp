@@ -43,6 +43,9 @@ public:
         // Peer (seller)
         event::Recv<protocol_wire::FullPiece> fullPiece;
 
+        // Seller sends test payload
+        event::Recv<protocol_wire::SpeedTestPayload> receiveSpeedTestPayload;
+
         // Validate client (buyer) payment based on this fixture
         bool validatePayment(const Coin::Signature &, int) const;
     };
@@ -52,6 +55,7 @@ public:
     // Fast forward routines
     void toBuyMode(CBStateMachine *);
     void toSellerHasJoined(CBStateMachine *);
+    void toCompletedTestingSellerSpeed(CBStateMachine *, uint32_t payloadSize);
 
 private:
 
