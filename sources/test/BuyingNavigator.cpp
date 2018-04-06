@@ -27,6 +27,18 @@ bool BuyingNavigator::Fixture::validatePayment(const Coin::Signature & payment, 
     return payee.registerPayment(payment);
 }
 
+event::Recv<protocol_wire::SpeedTestPayload>
+BuyingNavigator::Fixture::receiveTestPayloadEvent(uint32_t payloadSize) {
+  protocol_wire::SpeedTestPayload payload(payloadSize);
+  event::Recv<protocol_wire::SpeedTestPayload> event(payload);
+  return event;
+}
+
+event::TestSellerSpeed
+BuyingNavigator::Fixture::testSellerSpeed(uint32_t payloadSize) {
+  return event::TestSellerSpeed(payloadSize);
+}
+
 BuyingNavigator::BuyingNavigator(const Fixture & fixture)
     : _fixture(fixture) {
 }
@@ -36,9 +48,8 @@ void BuyingNavigator::toBuyMode(protocol_statemachine::CBStateMachine * machine)
 }
 
 void BuyingNavigator::toCompletedTestingSellerSpeed(protocol_statemachine::CBStateMachine * machine, uint32_t payloadSize) {
-    event::TestSellerSpeed testSellerSpeed(payloadSize);
-    machine->processEvent(testSellerSpeed);
-    machine->processEvent(_fixture.receiveSpeedTestPayload);
+    machine->processEvent(_fixture.testSellerSpeed(payloadSize));
+    machine->processEvent(_fixture.receiveTestPayloadEvent(payloadSize));
 }
 
 void BuyingNavigator::toSellerHasJoined(protocol_statemachine::CBStateMachine * machine) {

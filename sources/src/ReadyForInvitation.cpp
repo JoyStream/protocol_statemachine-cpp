@@ -9,6 +9,7 @@
 #include <protocol_statemachine/ReadyToSendTestPayload.hpp>
 #include <protocol_statemachine/Invited.hpp>
 #include <protocol_statemachine/exception/InvitedToJoinContractByNonBuyer.hpp>
+#include <protocol_statemachine/exception/SpeedTestRequestedByNonBuyer.hpp>
 
 #include <iostream>
 
@@ -55,16 +56,10 @@ namespace protocol_statemachine {
         ModeAnnounced mode = context<CBStateMachine>().announcedModeAndTermsFromPeer().modeAnnounced();
 
         if(mode != ModeAnnounced::buy)
-            throw exception::InvitedToJoinContractByNonBuyer(mode);
-
-        const uint32_t payloadSize = e.message().payloadSize();
-
-        context<CBStateMachine>()._requestedTestPayloadSize = payloadSize;
-
-        // Test payload size is within max permitted by protocol
+            throw exception::SpeedTestRequestedByNonBuyer(mode);
 
         // Notify client
-        context<CBStateMachine>()._buyerRequestedSpeedTest(payloadSize);
+        context<CBStateMachine>().buyerRequestedSpeedTest(e.message().payloadSize());
 
         // and make transition
         return transit<ReadyToSendTestPayload>();

@@ -186,7 +186,7 @@ private:
     bool _localMessageOverflow;
 
     // SpeedTest completed
-    bool _sellerCompletedSpeedTest;
+    bool _sellerSuccessfullyCompletedSpeedTest;
 
     bool _buyerRequestedSpeedTest;
     uint32_t _requestedPayloadSize;

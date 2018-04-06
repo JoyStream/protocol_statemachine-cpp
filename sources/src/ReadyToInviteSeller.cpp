@@ -33,7 +33,7 @@ namespace protocol_statemachine {
       context<CBStateMachine>()._sendSpeedTestRequestMessage(protocol_wire::SpeedTestRequest(payloadSize));
 
       // Record start time of test
-      context<CBStateMachine>().sentSpeedTestRequest();
+      context<CBStateMachine>().sentSpeedTestRequest(payloadSize);
 
       // Start waiting for seller to complete test
       return transit<TestingSellerSpeed>();

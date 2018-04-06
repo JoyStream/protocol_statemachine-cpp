@@ -26,5 +26,7 @@
 #include <protocol_statemachine/WaitingForSellerToJoin.hpp>
 #include <protocol_statemachine/WaitingToStart.hpp>
 #include <protocol_statemachine/StartedSelling.hpp>
+#include <protocol_statemachine/ReadyToSendTestPayload.hpp>
+#include <protocol_statemachine/TestingSellerSpeed.hpp>
 
 #endif // JOYSTREAM_PROTOCOLSTATEMACHINE_HPP

@@ -25,10 +25,12 @@ set(
     src/event/PieceLoaded.cpp
     src/event/InviteSeller.cpp
     src/event/TestSellerSpeed.cpp
+    src/event/SendTestPayload.cpp
     src/exception/InvitedToJoinContractByNonBuyer.cpp
     src/exception/StateIncompatibleEvent.cpp
     src/exception/CannotInviteNonSeller.cpp
     src/exception/CannotSpeedTestNonSeller.cpp
+    src/exception/SpeedTestRequestedByNonBuyer.cpp
     src/detail/InitializeBuying.cpp
     src/detail/InitializeSelling.cpp
     src/AnnouncedModeAndTerms.cpp

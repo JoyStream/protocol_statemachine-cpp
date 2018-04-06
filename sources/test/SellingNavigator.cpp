@@ -26,6 +26,12 @@ event::Recv<protocol_wire::Payment> SellingNavigator::Fixture::goodPayment(const
     return event::Recv<protocol_wire::Payment>(payment);
 }
 
+event::Recv<protocol_wire::SpeedTestRequest>
+SellingNavigator::Fixture::receiveSpeedTestRequest (uint32_t payloadSize) {
+    protocol_wire::SpeedTestRequest msg(payloadSize);
+    return event::Recv<protocol_wire::SpeedTestRequest>(msg);
+}
+
 SellingNavigator::SellingNavigator(Fixture fixture)
     : _fixture(fixture) {
 }
@@ -48,4 +54,9 @@ void SellingNavigator::toReceivedRequest(CBStateMachine * machine) {
 void SellingNavigator::toSentFullPiece(CBStateMachine * machine) {
     toReceivedRequest(machine);
     machine->processEvent(_fixture.fullPiece);
+}
+
+void SellingNavigator::handleSpeedTestRequest(CBStateMachine *machine, uint32_t payloadSize) {
+  machine->processEvent(_fixture.receiveSpeedTestRequest(payloadSize));
+  machine->processEvent(_fixture.sendTestPayload);
 }

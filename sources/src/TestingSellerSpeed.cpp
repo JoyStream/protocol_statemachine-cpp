@@ -20,8 +20,7 @@ namespace protocol_statemachine {
 
       std::cout << "Reacting to Recv<protocol_wire::SpeedTestPayload> event." << std::endl;
 
-      // Record end time of test
-      context<CBStateMachine>().receivedTestPayload();
+      context<CBStateMachine>().receivedTestPayload(e.message().payloadSize());
 
       // Return to ready to invite seller
       return transit<ReadyToInviteSeller>();

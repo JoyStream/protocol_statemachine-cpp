@@ -106,7 +106,7 @@ namespace protocol_statemachine {
     //// Buying Notifications
 
     // Peer sent the speedtest payload
-    typedef NoPayloadNotification SellerCompletedSpeedTest;
+    typedef std::function<void(bool)> SellerCompletedSpeedTest;
 
     // Peer, in seller mode, joined the most recent invitation
     typedef NoPayloadNotification SellerJoined;
@@ -228,8 +228,9 @@ namespace protocol_statemachine {
         void clientToBuyMode(const protocol_wire::BuyerTerms &);
 
         // Speed testing
-        void sentSpeedTestRequest();
-        void receivedTestPayload();
+        void sentSpeedTestRequest(uint32_t);
+        void receivedTestPayload(uint32_t);
+        void buyerRequestedSpeedTest(uint32_t);
 
         //// Callbacks
 
@@ -297,7 +298,7 @@ namespace protocol_statemachine {
         CallbackQueuer<const protocol_wire::PieceData &> _receivedFullPiece;
         CallbackQueuer<> _remoteMessageOverflow;
         CallbackQueuer<> _localMessageOverflow;
-        CallbackQueuer<> _sellerCompletedSpeedTest;
+        CallbackQueuer<bool> _sellerCompletedSpeedTest;
         CallbackQueuer<uint32_t> _buyerRequestedSpeedTest;
 
         void peerAnnouncedMode();

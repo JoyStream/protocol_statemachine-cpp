@@ -43,11 +43,12 @@ public:
         // Peer (seller)
         event::Recv<protocol_wire::FullPiece> fullPiece;
 
-        // Seller sends test payload
-        event::Recv<protocol_wire::SpeedTestPayload> receiveSpeedTestPayload;
-
         // Validate client (buyer) payment based on this fixture
         bool validatePayment(const Coin::Signature &, int) const;
+
+        event::TestSellerSpeed testSellerSpeed(uint32_t);
+
+        event::Recv<protocol_wire::SpeedTestPayload> receiveTestPayloadEvent(uint32_t);
     };
 
     BuyingNavigator(const Fixture &);

@@ -157,6 +157,14 @@ TEST(statemachineTest, selling)
 
     spy.reset();
 
+    // Handle speed test request
+    navigator.handleSpeedTestRequest(machine, 2000);
+
+    EXPECT_TRUE(spy.messageSent());
+    EXPECT_EQ(spy.messageType(), MessageType::speedTestPayload);
+
+    spy.reset();
+
     // Then buyer peer invites us (seller) with correct index
     machine->processEvent(f.validJoinContract);
 

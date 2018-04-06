@@ -145,8 +145,8 @@ protocol_statemachine::CBStateMachine * CBStateMachineCallbackSpy::createMonitor
     [this](){
         _localMessageOverflow = true;
     },
-    [this](){
-        _sellerCompletedSpeedTest = true;
+    [this](bool successful){
+        _sellerSuccessfullyCompletedSpeedTest = successful;
     },
     [this](uint32_t payloadSize) {
         _buyerRequestedSpeedTest = true;
@@ -214,7 +214,7 @@ void CBStateMachineCallbackSpy::reset() {
     _remoteMessageOverflow = false;
     _localMessageOverflow = false;
 
-    _sellerCompletedSpeedTest = false;
+    _sellerSuccessfullyCompletedSpeedTest = false;
 
     _buyerRequestedSpeedTest = false;
 }
@@ -512,5 +512,5 @@ bool CBStateMachineCallbackSpy::localOverflow() const {
 }
 
 bool CBStateMachineCallbackSpy::sellerCompletedSpeedTest() const {
-  return _sellerCompletedSpeedTest;
+  return _sellerSuccessfullyCompletedSpeedTest;
 }

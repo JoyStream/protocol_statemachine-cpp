@@ -177,16 +177,29 @@ namespace protocol_statemachine {
         _sendBuyMessage(protocol_wire::Buy(t));
     }
 
+    void CBStateMachine::buyerRequestedSpeedTest(uint32_t payloadSize) {
+      _requestedTestPayloadSize = payloadSize;
 
-    void CBStateMachine::sentSpeedTestRequest() {
-      // record the time using resolution timer?
+      // throw if requested payload size greater than max size permitted by protocol?
+      // Or let client decide what to do?
+
+      _buyerRequestedSpeedTest(payloadSize);
     }
 
-    void CBStateMachine::receivedTestPayload() {
+    void CBStateMachine::sentSpeedTestRequest(uint32_t payloadSize) {
+      // record the time using resolution timer?
+      _requestedTestPayloadSize = payloadSize;
+    }
+
+    void CBStateMachine::receivedTestPayload(uint32_t payloadSize) {
       // record the time using resolution timer?
       // leave it to the client to calculate the time it took to deliver payload?
       // or send it as argument in the notification call?
-      _sellerCompletedSpeedTest();
+
+      // Payload size from seller must be exactly the size requested
+      bool successful = payloadSize == _requestedTestPayloadSize;
+
+      _sellerCompletedSpeedTest(successful);
     }
 
     void CBStateMachine::peerAnnouncedMode() {
