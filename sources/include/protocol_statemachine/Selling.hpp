@@ -31,7 +31,10 @@ namespace protocol_statemachine {
         typedef boost::mpl::list<
                                 sc::custom_reaction<event::ObserveModeStarted>,
                                 sc::custom_reaction<event::BuyModeStarted>,
-                                sc::custom_reaction<event::UpdateTerms<protocol_wire::SellerTerms>>
+                                sc::custom_reaction<event::UpdateTerms<protocol_wire::SellerTerms>>,
+                                sc::custom_reaction<event::Recv<protocol_wire::Observe>>,
+                                sc::custom_reaction<event::Recv<protocol_wire::Buy>>,
+                                sc::custom_reaction<event::Recv<protocol_wire::Sell>>
                                 > reactions;
 
         Selling();
@@ -40,6 +43,9 @@ namespace protocol_statemachine {
         sc::result react(const event::ObserveModeStarted &);
         sc::result react(const event::BuyModeStarted &);
         sc::result react(const event::UpdateTerms<protocol_wire::SellerTerms> &);
+        sc::result react(const event::Recv<protocol_wire::Observe> &);
+        sc::result react(const event::Recv<protocol_wire::Buy> &);
+        sc::result react(const event::Recv<protocol_wire::Sell> &);
 
     };
 }

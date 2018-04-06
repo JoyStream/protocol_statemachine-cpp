@@ -49,5 +49,48 @@ namespace protocol_statemachine {
         // Transition back to initial Buying state
         return transit<Buying>();
     }
+
+    sc::result Buying::react(const event::Recv<protocol_wire::Observe> &) {
+
+        std::cout << "Reacting to Recv<protocol_wire::Observe> event." << std::endl;
+
+        // Switch peer state
+        context<CBStateMachine>().peerToObserveMode();
+
+        // Notify client about announcement
+        context<CBStateMachine>().peerAnnouncedMode();
+
+        // Transition back to initial Buying state
+        return transit<Buying>();
+    }
+
+    sc::result Buying::react(const event::Recv<protocol_wire::Buy> & e) {
+
+        std::cout << "Reacting to Recv<protocol_wire::Buy> event." << std::endl;
+
+        // Switch peer state
+        context<CBStateMachine>().peerToBuyMode(e.message().terms());
+
+        // Notify client about announcement
+        context<CBStateMachine>().peerAnnouncedMode();
+
+        // Transition back to initial Buying state
+        return transit<Buying>();
+    }
+
+    sc::result Buying::react(const event::Recv<protocol_wire::Sell> & e) {
+
+        std::cout << "Reacting to Recv<protocol_wire::Sell> event." << std::endl;
+
+        // Switch peer state
+        protocol_wire::Sell m = e.message();
+        context<CBStateMachine>().peerToSellMode(m.terms(), m.index());
+
+        // Notify client about announcement
+        context<CBStateMachine>().peerAnnouncedMode();
+
+        // Transition back to initial Buying state
+        return transit<Buying>();
+    }
 }
 }
