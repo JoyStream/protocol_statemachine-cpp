@@ -26,5 +26,31 @@ namespace protocol_statemachine {
       return transit<ReadyToInviteSeller>();
   }
 
+  sc::result TestingSellerSpeed::react(const event::Recv<protocol_wire::Sell> & e) {
+
+      std::cout << "Reacting to Recv<protocol_wire::Sell> event." << std::endl;
+
+      // update peer terms
+      protocol_wire::Sell m = e.message();
+      context<CBStateMachine>().peerToSellMode(m.terms(), m.index());
+
+      // Notify client about announcement
+      context<CBStateMachine>().peerAnnouncedMode();
+
+      // remain in same state
+      return discard_event();
+  }
+
+  sc::result TestingSellerSpeed::react(const event::UpdateTerms<joystream::protocol_wire::BuyerTerms> & e) {
+
+      std::cout << "Reacting to UpdateTerms<BuyerTerms>." << std::endl;
+
+      // update our terms
+      context<CBStateMachine>().clientToBuyMode(e.terms());
+
+      // remain in same state
+      return discard_event();
+  }
+
 }
 }

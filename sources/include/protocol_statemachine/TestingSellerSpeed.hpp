@@ -20,13 +20,17 @@ namespace protocol_statemachine {
     public:
 
       typedef boost::mpl::list<
-                              sc::custom_reaction<event::Recv<protocol_wire::SpeedTestPayload>>
+                              sc::custom_reaction<event::Recv<protocol_wire::SpeedTestPayload>>,
+                              sc::custom_reaction<event::Recv<protocol_wire::Sell>>,
+                              sc::custom_reaction<event::UpdateTerms<protocol_wire::BuyerTerms>>
                               > reactions;
 
       TestingSellerSpeed();
 
       // Event handlers
       sc::result react(const event::Recv<protocol_wire::SpeedTestPayload> &);
+      sc::result react(const event::Recv<protocol_wire::Sell> &);
+      sc::result react(const event::UpdateTerms<protocol_wire::BuyerTerms> &);
 
     };
 
