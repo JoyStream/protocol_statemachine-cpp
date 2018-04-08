@@ -6,8 +6,10 @@
  */
 
 #include <protocol_statemachine/ReadyForInvitation.hpp>
+#include <protocol_statemachine/ReadyToSendTestPayload.hpp>
 #include <protocol_statemachine/Invited.hpp>
 #include <protocol_statemachine/exception/InvitedToJoinContractByNonBuyer.hpp>
+#include <protocol_statemachine/exception/SpeedTestRequestedByNonBuyer.hpp>
 
 #include <iostream>
 
@@ -44,6 +46,23 @@ namespace protocol_statemachine {
             // and make transition
             return transit<Invited>();
         }
+    }
+
+    sc::result ReadyForInvitation::react(const event::Recv<protocol_wire::SpeedTestRequest> & e) {
+
+        std::cout << "Reacting to Recv<wire::SpeedTestRequest>." << std::endl;
+
+        // Make sure the peer is actually a buyer, otherwise throw exception
+        ModeAnnounced mode = context<CBStateMachine>().announcedModeAndTermsFromPeer().modeAnnounced();
+
+        if(mode != ModeAnnounced::buy)
+            throw exception::SpeedTestRequestedByNonBuyer(mode);
+
+        // Notify client
+        context<CBStateMachine>().buyerRequestedSpeedTest(e.message().payloadSize());
+
+        // and make transition
+        return transit<ReadyToSendTestPayload>();
     }
 }
 }

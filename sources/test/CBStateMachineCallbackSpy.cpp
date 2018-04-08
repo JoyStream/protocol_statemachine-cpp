@@ -78,6 +78,20 @@ protocol_statemachine::CBStateMachine * CBStateMachineCallbackSpy::createMonitor
         _messageType = MessageType::payment;
     };
 
+    sendCallbacks.speedTestRequest = [this](const protocol_wire::SpeedTestRequest& m) {
+      std::cout << "Sending message: SpeedTestRequest" << std::endl;
+      _messageSent = true;
+      _speedTestRequestMessage = m;
+      _messageType = MessageType::speedTestRequest;
+    };
+
+    sendCallbacks.speedTestPayload = [this](const protocol_wire::SpeedTestPayload& m) {
+      std::cout << "Sending message: SpeedTestPayload" << std::endl;
+      _messageSent = true;
+      _speedTestPayloadMessage = m;
+      _messageType = MessageType::speedTestPayload;
+    };
+
     protocol_statemachine::CBStateMachine * machine = new protocol_statemachine::CBStateMachine(
     [this](const protocol_statemachine::AnnouncedModeAndTerms & a) {
         _peerHasAnnouncedMode = true;
@@ -130,6 +144,13 @@ protocol_statemachine::CBStateMachine * CBStateMachineCallbackSpy::createMonitor
     },
     [this](){
         _localMessageOverflow = true;
+    },
+    [this](bool successful){
+        _sellerSuccessfullyCompletedSpeedTest = successful;
+    },
+    [this](uint32_t payloadSize) {
+        _buyerRequestedSpeedTest = true;
+        _requestedPayloadSize = payloadSize;
     },
     MAX_PIECE_INDEX,
     Coin::Network::mainnet);
@@ -192,6 +213,10 @@ void CBStateMachineCallbackSpy::reset() {
 
     _remoteMessageOverflow = false;
     _localMessageOverflow = false;
+
+    _sellerSuccessfullyCompletedSpeedTest = false;
+
+    _buyerRequestedSpeedTest = false;
 }
 
 bool CBStateMachineCallbackSpy::peerHasAnnouncedMode() const {
@@ -484,4 +509,8 @@ bool CBStateMachineCallbackSpy::remoteOverflow() const {
 
 bool CBStateMachineCallbackSpy::localOverflow() const {
   return _localMessageOverflow;
+}
+
+bool CBStateMachineCallbackSpy::sellerCompletedSpeedTest() const {
+  return _sellerSuccessfullyCompletedSpeedTest;
 }

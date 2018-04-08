@@ -35,7 +35,9 @@ enum class MessageType {
     ready,
     request_full_piece,
     full_piece,
-    payment
+    payment,
+    speedTestRequest,
+    speedTestPayload
 };
 
 class CBStateMachineCallbackSpy {
@@ -111,6 +113,8 @@ public:
 
     bool localOverflow() const;
 
+    bool sellerCompletedSpeedTest() const;
+
 private:
 
     // ***
@@ -139,6 +143,8 @@ private:
     protocol_wire::Ready _readyMessage;
     protocol_wire::RequestFullPiece _requestFullPieceMessage;
     protocol_wire::Sell _sellMessage;
+    protocol_wire::SpeedTestRequest _speedTestRequestMessage;
+    protocol_wire::SpeedTestPayload _speedTestPayloadMessage;
 
     // ContractIsReady
     bool _contractHasBeenPrepared;
@@ -178,6 +184,12 @@ private:
     // Message overflow occured
     bool _remoteMessageOverflow;
     bool _localMessageOverflow;
+
+    // SpeedTest completed
+    bool _sellerSuccessfullyCompletedSpeedTest;
+
+    bool _buyerRequestedSpeedTest;
+    uint32_t _requestedPayloadSize;
 };
 
 #endif // CBSTATEMACHINECALLBACKSPY

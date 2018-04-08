@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 project(ProtocoStateMachine CXX)
 
-add_definitions(-DMAJOR_PROTOCOL_VERSION=3)
+add_definitions(-DMAJOR_PROTOCOL_VERSION=4)
 add_definitions(-DMINOR_PROTOCOL_VERSION=0)
 
 option(build_tests "build tests" OFF)
@@ -24,9 +24,13 @@ set(
     src/event/Joined.cpp
     src/event/PieceLoaded.cpp
     src/event/InviteSeller.cpp
+    src/event/TestSellerSpeed.cpp
+    src/event/SendTestPayload.cpp
     src/exception/InvitedToJoinContractByNonBuyer.cpp
     src/exception/StateIncompatibleEvent.cpp
     src/exception/CannotInviteNonSeller.cpp
+    src/exception/CannotSpeedTestNonSeller.cpp
+    src/exception/SpeedTestRequestedByNonBuyer.cpp
     src/detail/InitializeBuying.cpp
     src/detail/InitializeSelling.cpp
     src/AnnouncedModeAndTerms.cpp
@@ -46,6 +50,8 @@ set(
     src/SellerHasJoined.cpp
     src/PreparingContract.cpp
     src/RequestingPieces.cpp
+    src/TestingSellerSpeed.cpp
+    src/ReadyToSendTestPayload.cpp
 )
 
 # === build library ===

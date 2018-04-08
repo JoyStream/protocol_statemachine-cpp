@@ -157,6 +157,14 @@ TEST(statemachineTest, selling)
 
     spy.reset();
 
+    // Handle speed test request
+    navigator.handleSpeedTestRequest(machine, 2000);
+
+    EXPECT_TRUE(spy.messageSent());
+    EXPECT_EQ(spy.messageType(), MessageType::speedTestPayload);
+
+    spy.reset();
+
     // Then buyer peer invites us (seller) with correct index
     machine->processEvent(f.validJoinContract);
 
@@ -395,6 +403,15 @@ TEST(statemachineTest, buying)
     machine = spy.createMonitoredMachine();
     navigator.toBuyMode(machine);
     peerToSellMode(machine, f.peerToSellMode);
+
+    spy.reset();
+
+    // Speedtest the peer
+    navigator.toCompletedTestingSellerSpeed(machine, 20000);
+
+    EXPECT_TRUE(spy.messageSent());
+    EXPECT_EQ(spy.messageType(), MessageType::speedTestRequest);
+    EXPECT_TRUE(spy.sellerCompletedSpeedTest());
 
     spy.reset();
 

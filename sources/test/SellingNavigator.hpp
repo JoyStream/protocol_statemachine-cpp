@@ -53,6 +53,10 @@ public:
 
         // Peer (buyer) sends a valid payment
         event::Recv<protocol_wire::Payment> goodPayment(const Coin::PrivateKey &, int = 1) const;
+
+        event::Recv<protocol_wire::SpeedTestRequest> receiveSpeedTestRequest(uint32_t);
+
+        event::SendTestPayload sendTestPayload;
     };
 
     SellingNavigator(Fixture fixture);
@@ -61,6 +65,7 @@ public:
     void toServicingPieceRequests(CBStateMachine *);
     void toReceivedRequest(CBStateMachine *);
     void toSentFullPiece(CBStateMachine *);
+    void handleSpeedTestRequest(CBStateMachine *, uint32_t);
 
 private:
 
