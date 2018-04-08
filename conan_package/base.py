@@ -3,14 +3,14 @@ import os
 
 class ProtocolStateMachineBase(ConanFile):
     name = "ProtocolStateMachine"
-    version = "0.3.0"
+    version = "0.3.1"
     license = "(c) JoyStream Inc. 2016-2017"
     url = "https://github.com/JoyStream/protocol_statemachine-cpp.git"
     repo_ssh_url = "git@github.com:JoyStream/protocol_statemachine-cpp.git"
     repo_https_url = "https://github.com/JoyStream/protocol_statemachine-cpp.git"
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
-    requires = "ProtocolWire/0.1.2@joystream/stable", "PaymentChannel/0.2.0@joystream/stable", "Common/0.2.0@joystream/stable"
+    requires = "ProtocolWire/0.1.3@joystream/stable", "PaymentChannel/0.2.0@joystream/stable", "Common/0.2.0@joystream/stable"
     build_policy = "missing"
 
     def source(self):

@@ -20,5 +20,7 @@
 #include <protocol_statemachine/event/SellModeStarted.hpp>
 #include <protocol_statemachine/event/SendPayment.hpp>
 #include <protocol_statemachine/event/UpdateTerms.hpp>
+#include <protocol_statemachine/event/SendTestPayload.hpp>
+#include <protocol_statemachine/event/TestSellerSpeed.hpp>
 
 #endif // JOYSTREAM_PROTOCOLSTATEMACHINE_EVENT_HPP

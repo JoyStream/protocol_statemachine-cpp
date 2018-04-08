@@ -10,6 +10,7 @@
 
 #include <protocol_statemachine/Buying.hpp>
 #include <protocol_statemachine/event/InviteSeller.hpp>
+#include <protocol_statemachine/event/TestSellerSpeed.hpp>
 
 namespace joystream {
 namespace protocol_statemachine {
@@ -19,13 +20,15 @@ namespace protocol_statemachine {
     public:
 
         typedef boost::mpl::list<
-                                sc::custom_reaction<event::InviteSeller>
+                                sc::custom_reaction<event::InviteSeller>,
+                                sc::custom_reaction<event::TestSellerSpeed>
                                 > reactions;
 
         ReadyToInviteSeller();
 
         // Event handlers
         sc::result react(const event::InviteSeller &);
+        sc::result react(const event::TestSellerSpeed &);
 
     };
 
